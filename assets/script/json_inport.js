@@ -73,7 +73,7 @@ const getData = function() {
     }
 
 
-    //randame dazniausiai pasikartojanti elementa masyve;
+    //randame dazniausiai pasikartojanti elementa (ikona) masyve;
     
     function most(a){
     var counts = {};
@@ -111,6 +111,70 @@ const getData = function() {
     return [min, max];
     }
     //console.log("Minimaxas: "+minmax(objects[1].start, objects[1].end));
+
+    //formuojame animuotu ikonu masyva
+    let animIcoDay = [
+    "assets/gif/animated/day.svg",
+    "assets/gif/animated/cloudy-day-2.svg",
+    "assets/gif/animated/cloudy.svg",
+    "assets/gif/animated/cloudy.svg",
+    "assets/gif/animated/rainy-4.svg",
+    "assets/gif/animated/rainy-6.svg",
+    "assets/gif/animated/thunder.svg",
+    "assets/gif/animated/snowy-6.svg",
+    "assets/gif/animated/cloudy.svg"
+    ];
+
+    let animIcoNight = [
+    "assets/gif/animated/night.svg",
+    "assets/gif/animated/cloudy-night-2.svg",
+    "assets/gif/animated/cloudy.svg",
+    "assets/gif/animated/cloudy.svg",
+    "assets/gif/animated/rainy-4.svg",
+    "assets/gif/animated/rainy-6.svg",
+    "assets/gif/animated/thunder.svg",
+    "assets/gif/animated/snowy-6.svg",
+    "assets/gif/animated/cloudy.svg"
+    ];
+
+    //formuojame API ikonu masyva
+    let staticIcoDay = [
+    "01d",
+    "02d",
+    "03d",
+    "04d",
+    "09d",
+    "10d",
+    "11d",
+    "13d",
+    "50d"
+    ];
+
+    let staticIcoNight = [
+    "01n",
+    "02n",
+    "03n",
+    "04n",
+    "09n",
+    "10n",
+    "11n",
+    "13n",
+    "50n"
+    ];
+    let change = "";
+    function keitimas (a){
+    for (let i = 0; i<staticIcoDay.length; i++){
+        if(a === staticIcoDay[i]){
+            a = animIcoDay[i];
+        }
+        if(a === staticIcoNight[i]){
+            change = animIcoNight[i];
+        }
+    }
+    return change;
+    
+}
+
    
     var dayOb={};
     for (var x = 0; x < 5; x++) {
@@ -118,7 +182,8 @@ const getData = function() {
         dayOb[x] = {
             minmax: minmax(objects[x].start, objects[x].end),
             day: weekDay(data.list[objects[x].start].dt),
-            ikona: most(ikona(objects[x].start, objects[x].end))
+            ikona: keitimas(most(ikona(objects[x].start, objects[x].end)))
+           
         }    
     }
     console.log(dayOb);
@@ -129,7 +194,7 @@ const getData = function() {
         Orai</h2>
     </div>
     <div class = "iconToday">
-    <img src = "https://openweathermap.org/img/wn/${dayOb[0].ikona}@2x.png">
+    <img src = "${dayOb[0].ikona}">
     </div>
     <div class = "tempToday">
         <h1>${parseInt(data.list[0].main.temp)}&deg;C</h1>
@@ -137,14 +202,13 @@ const getData = function() {
     </div>
     `
     for(let i=0; i<5; i++){
-        console.log(dayOb[i].ikona);
         document.getElementById("daily-flex-container").innerHTML += `
         <div class = "dayColumn">
             <div class = "todayHeading">
                 <h3>${dayOb[i].day}</h3>
             </div>    
             <div class = "iconWeek">
-            <img src = "https://openweathermap.org/img/wn/${dayOb[i].ikona}@2x.png">
+            <img src = "${dayOb[i].ikona}">
             </div>
             <div class= "dayNyght">
                 <div class= "day">
@@ -166,33 +230,3 @@ const getData = function() {
     xhr.send();
 };
 getData();
-
-//<h4>${data.list[0].weather[0].description}</h4>
-
-//<img src = "https://openweathermap.org/img/wn/${dayOb[i].ikona}@2x.png">
-//<img src = "assets/gif/animated/cloudy.svg">
-
-//DIENOS ANIMUOTOS IKONOS
-// document.getElementById("test").innerHTML = `
-// <img src = "assets/gif/animated/day.svg">
-// <img src = "assets/gif/animated/cloudy-day-2.svg">
-// <img src = "assets/gif/animated/cloudy.svg">
-// <img src = "assets/gif/animated/cloudy.svg">
-// <img src = "assets/gif/animated/rainy-4.svg">
-// <img src = "assets/gif/animated/rainy-6.svg">
-// <img src = "assets/gif/animated/thunder.svg">
-// <img src = "assets/gif/animated/snowy-6.svg">
-// <img src = "assets/gif/animated/cloudy.svg">
-// `   
-////NAKTIES ANIMUOTOS IKONOS
-// document.getElementById("test").innerHTML += `
-// <img src = "assets/gif/animated/night.svg">
-// <img src = "assets/gif/animated/cloudy-night-2.svg">
-// <img src = "assets/gif/animated/cloudy.svg">
-// <img src = "assets/gif/animated/cloudy.svg">
-// <img src = "assets/gif/animated/rainy-4.svg">
-// <img src = "assets/gif/animated/rainy-6.svg">
-// <img src = "assets/gif/animated/thunder.svg">
-// <img src = "assets/gif/animated/snowy-6.svg">
-// <img src = "assets/gif/animated/cloudy.svg">
-// `   

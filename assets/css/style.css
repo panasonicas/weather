@@ -73,9 +73,6 @@ p, h1, h2, h3, h4{
 	display:flex;
 	justify-content: center;
 	width: 100%;
-	background-color: rgb(116, 120, 121);
-	border-radius: 7%;
-	border:1px solid rgb(54, 54, 54);
 }
 .iconWeek img{
 	width:40%;
