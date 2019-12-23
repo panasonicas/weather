@@ -129,7 +129,7 @@ const getData = function() {
         Orai</h2>
     </div>
     <div class = "iconToday">
-    <img src = "http://openweathermap.org/img/wn/${dayOb[0].ikona}@2x.png">
+    <img src = "https://openweathermap.org/img/wn/${dayOb[0].ikona}@2x.png">
     </div>
     <div class = "tempToday">
         <h1>${parseInt(data.list[0].main.temp)}&deg;C</h1>
@@ -144,7 +144,7 @@ const getData = function() {
                 <h3>${dayOb[i].day}</h3>
             </div>    
             <div class = "iconWeek">
-            <img src = "http://openweathermap.org/img/wn/${dayOb[i].ikona}@2x.png">
+            <img src = "https://openweathermap.org/img/wn/${dayOb[i].ikona}@2x.png">
             </div>
             <div class= "dayNyght">
                 <div class= "day">
@@ -169,7 +169,7 @@ getData();
 
 //<h4>${data.list[0].weather[0].description}</h4>
 
-//<img src = "http://openweathermap.org/img/wn/${dayOb[i].ikona}@2x.png">
+//<img src = "https://openweathermap.org/img/wn/${dayOb[i].ikona}@2x.png">
 //<img src = "assets/gif/animated/cloudy.svg">
 
 //DIENOS ANIMUOTOS IKONOS
