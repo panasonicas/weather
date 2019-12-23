@@ -27,7 +27,7 @@ function hour(UNIX_timestamp){
 }
 
 
-const url = "http://api.openweathermap.org/data/2.5/forecast?id=593116&units=metric&lang=lt&APPID=15d5d0897e0df118cf21bf2eef3f894f";
+const url = "https://api.openweathermap.org/data/2.5/forecast?id=593116&units=metric&lang=lt&APPID=15d5d0897e0df118cf21bf2eef3f894f";
 const getData = function() {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
