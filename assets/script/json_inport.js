@@ -68,6 +68,7 @@ const getData = function() {
         var arr = [];
         for(a; a<=b; a++){
             arr.push(data.list[a].weather[0].icon);
+            //console.log(arr);
         }
         return arr;
     }
@@ -91,8 +92,10 @@ const getData = function() {
                 mostFrequent = a[i];
         }
     }
+    //console.log("most Frequant:  "+mostFrequent);
     return mostFrequent;
     }
+    //console.log("ieskomasis: "+most(ikona(data.list[0].weather[0].icon, data.list[4].weather[0].icon)))
             
     function minmax (a, b){ 
         let max = -100;
@@ -161,24 +164,27 @@ const getData = function() {
     "13n",
     "50n"
     ];
+
+
     let change = "";
-    function keitimas (a){
-    for (let i = 0; i<staticIcoDay.length; i++){
-        if(a === staticIcoDay[i]){
-            a = animIcoDay[i];
+    function keitimas(a){
+    for (let i = 0; i<staticIcoNight.length; i++){
+        if(a == staticIcoDay[i]){
+            change = animIcoDay[i];
         }
-        if(a === staticIcoNight[i]){
+        if(a == staticIcoNight[i]){
             change = animIcoNight[i];
         }
     }
-    return change;
-    
+    return change;   
 }
+
+//console.log("keiciame 02d: "+keitimas("02d"));
+//console.log("keiciame 02n: "+keitimas("02n"));
 
    
     var dayOb={};
     for (var x = 0; x < 5; x++) {
-        console.log("ikonu masyvas: "+ikona(objects[x].start, objects[x].end));
         dayOb[x] = {
             minmax: minmax(objects[x].start, objects[x].end),
             day: weekDay(data.list[objects[x].start].dt),
