@@ -13,6 +13,21 @@ function timeConverter(UNIX_timestamp){
     return time;
 }
 
+function now (){
+    var a = new Date();
+    var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var days = ["Sekmadienis", "Pirmadienis", "Antradienis", "Trečiadienis", "Ketvirtadienis", "Penktadienis", "Šeštadienis"];
+    var day = days[a.getDay()];
+    var time = day+ " " + year + '-' + month + '-'+date + ' ' + hour + ':' + min;
+    return time;
+}
+
 function weekDay(UNIX_timestamp){
     var a = new Date(UNIX_timestamp * 1000);
     var days = ["Sekmadienis", "Pirmadienis", "Antradienis", "Trečiadienis", "Ketvirtadienis", "Penktadienis", "Šeštadienis"];
@@ -25,12 +40,70 @@ function hour(UNIX_timestamp){
     var hour = a.getHours();
     return hour;
 }
+// var strUser = 593116;
+
+// function myfunction(){
+//     document.getElementById("btn").addEventListener("click", function(){
+//     var e = document.getElementById("selectorius");
+//     var strUser = e.options[e.selectedIndex].value;
+//     var url1 = `https://api.openweathermap.org/data/2.5/forecast?id=${strUser}&units=metric&lang=lt&APPID=15d5d0897e0df118cf21bf2eef3f894f`
+//     return url1;
+//     });
+// }
+// function ztr(){document.getElementById("btn").addEventListener("click", function(){
+//     myfunction();
+
+//     //console.log(myfunction());
+//    location.reload(false);
+
+// })
 
 
-const url = "https://api.openweathermap.org/data/2.5/forecast?id=593116&units=metric&lang=lt&APPID=15d5d0897e0df118cf21bf2eef3f894f";
-const getData = function() {
+
+//var uber = ztr();
+//console.log(myfunction());
+
+//var e = document.getElementById("selectorius");
+//var strUser = e.options[e.selectedIndex].value;
+//     document.getElementById("btn").addEventListener("click", function(){
+//     var e = document.getElementById("selectorius");
+//     var strUser = e.options[e.selectedIndex].value;
+//     return strUser
+// });
+//console.log(strUser);
+
+// function myFunction() {
+//     var e = document.getElementById("selectorius");
+//     var strUser = e.options[e.selectedIndex].value;
+//     return strUser
+//   }
+//   strUser= myfunction();  
+
+//let url = `https://api.openweathermap.org/data/2.5/forecast?id=${uber}&units=metric&lang=lt&APPID=15d5d0897e0df118cf21bf2eef3f894f`;
+//console.log(url);
+
+
+// document.getElementById("selectorius").addEventListener("click", function(){
+//     location.reload(false);
+// });
+function Refresh(){document.getElementById("btn").addEventListener("click", function(){
+    //location.reload();
+    document.getElementById("daily-flex-container").innerHTML = "";
+    getData();
+    });
+}
+
+function myfunction(){
+    var e = document.getElementById("selectorius");
+    var strUser = e.options[e.selectedIndex].value;
+    var url1 = `https://api.openweathermap.org/data/2.5/forecast?id=${strUser}&units=metric&lang=lt&APPID=15d5d0897e0df118cf21bf2eef3f894f`
+    return url1;
+    };
+
+
+function getData () {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
+    xhr.open("GET", myfunction(), true);
     xhr.onload = function() {
         const data = JSON.parse(xhr.response);
         for(let i=0; i<40; i++){
@@ -68,7 +141,6 @@ const getData = function() {
         var arr = [];
         for(a; a<=b; a++){
             arr.push(data.list[a].weather[0].icon);
-            //console.log(arr);
         }
         return arr;
     }
@@ -92,10 +164,8 @@ const getData = function() {
                 mostFrequent = a[i];
         }
     }
-    //console.log("most Frequant:  "+mostFrequent);
     return mostFrequent;
     }
-    //console.log("ieskomasis: "+most(ikona(data.list[0].weather[0].icon, data.list[4].weather[0].icon)))
             
     function minmax (a, b){ 
         let max = -100;
@@ -164,27 +234,24 @@ const getData = function() {
     "13n",
     "50n"
     ];
-
-
     let change = "";
-    function keitimas(a){
-    for (let i = 0; i<staticIcoNight.length; i++){
-        if(a == staticIcoDay[i]){
+    function keitimas (a){
+    for (let i = 0; i<staticIcoDay.length; i++){
+        if(a === staticIcoDay[i]){
             change = animIcoDay[i];
         }
-        if(a == staticIcoNight[i]){
+        if(a === staticIcoNight[i]){
             change = animIcoNight[i];
         }
     }
-    return change;   
+    return change;
+    
 }
-
-//console.log("keiciame 02d: "+keitimas("02d"));
-//console.log("keiciame 02n: "+keitimas("02n"));
 
    
     var dayOb={};
     for (var x = 0; x < 5; x++) {
+        console.log("ikonu masyvas: "+ikona(objects[x].start, objects[x].end));
         dayOb[x] = {
             minmax: minmax(objects[x].start, objects[x].end),
             day: weekDay(data.list[objects[x].start].dt),
@@ -203,6 +270,7 @@ const getData = function() {
     <img src = "${dayOb[0].ikona}">
     </div>
     <div class = "tempToday">
+        <h4 class = "now">${now()}</h4>
         <h1>${parseInt(data.list[0].main.temp)}&deg;C</h1>
         <h4>${data.list[0].weather[0].description}</h4>
     </div>
@@ -235,4 +303,41 @@ const getData = function() {
     };
     xhr.send();
 };
+//getSelectValue(selectID);
+//getLastSelectedValue();
+//getData();
+Refresh();
 getData();
+
+
+//<h4>${data.list[0].weather[0].description}</h4>
+
+//<img src = "https://openweathermap.org/img/wn/${dayOb[i].ikona}@2x.png">
+//<img src = "assets/gif/animated/cloudy.svg">
+
+//DIENOS ANIMUOTOS IKONOS
+// document.getElementById("test").innerHTML = `
+// <img src = "assets/gif/animated/day.svg">
+// <img src = "assets/gif/animated/cloudy-day-2.svg">
+// <img src = "assets/gif/animated/cloudy.svg">
+// <img src = "assets/gif/animated/cloudy.svg">
+// <img src = "assets/gif/animated/rainy-4.svg">
+// <img src = "assets/gif/animated/rainy-6.svg">
+// <img src = "assets/gif/animated/thunder.svg">
+// <img src = "assets/gif/animated/snowy-6.svg">
+// <img src = "assets/gif/animated/cloudy.svg">
+// `   
+////NAKTIES ANIMUOTOS IKONOS
+// document.getElementById("test").innerHTML += `
+// <img src = "assets/gif/animated/night.svg">
+// <img src = "assets/gif/animated/cloudy-night-2.svg">
+// <img src = "assets/gif/animated/cloudy.svg">
+// <img src = "assets/gif/animated/cloudy.svg">
+// <img src = "assets/gif/animated/rainy-4.svg">
+// <img src = "assets/gif/animated/rainy-6.svg">
+// <img src = "assets/gif/animated/thunder.svg">
+// <img src = "assets/gif/animated/snowy-6.svg">
+// <img src = "assets/gif/animated/cloudy.svg">
+// `   
+
+//<img src = "https://openweathermap.org/img/wn/${dayOb[0].ikona}@2x.png"></img>
