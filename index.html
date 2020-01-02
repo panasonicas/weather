@@ -4,16 +4,34 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Visma praktika</title>
+		<title>Vilnius orai 5 dienos</title>
+		<link href="https://fonts.googleapis.com/css?family=Ubuntu+Condensed&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="assets/css/style.css">
 	</head>
 	<body>
-		<div class=flex-container>
-			<div id="image-holder">
+		<div class=container>
+			<div id ="selector">
+				<!-- onClick="document.location.reload(true)" -->
+				<button id="btn" type="button" >Select</button>
+				<select id ="selectorius">
+					<option value=593116>Vilnius</option>
+					<option value=598316>Kaunas</option>
+					<option value=598098 >Klaipėda</option>
+					<option value=599757>Druskininkai</option>
+					<option value=596128>Panevėžys</option>
+					<option value=594739>Šiauliai</option>
+					<option value=593153>Vilkaviškis</option>
+					<option value=597231>Marijampolė</option>
+				  </select>				  
 			</div>
-			<div id="image-show">
+			<div id="flex-container">	
 			</div>
-		</div>	
+			<div id="daily-flex-container">	
+			</div>
+			<!-- <div calass="testSpec">	
+			</div> -->
+		</div>
+		<div id="test"></div>
 		<script src="assets/script/json_inport.js"></script>
 	</body>
 </html>
