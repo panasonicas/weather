@@ -15,18 +15,28 @@ function timeConverter(UNIX_timestamp){
 
 function now (){
     var a = new Date();
-    var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
     var year = a.getFullYear();
+    
+    function ifLess10(t){
+        if(t<10){
+            t="0"+t; 
+        }
+        return t;
+    }
+    var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
     var month = months[a.getMonth()];
-    var date = a.getDate();
-    var hour = a.getHours();
-    var min = a.getMinutes();
-    var sec = a.getSeconds();
+    var date = ifLess10(a.getDate());
+    var hour = ifLess10(a.getHours());
+    var min = ifLess10(a.getMinutes());
+    var sec = ifLess10(a.getSeconds());
     var days = ["Sekmadienis", "Pirmadienis", "Antradienis", "Trečiadienis", "Ketvirtadienis", "Penktadienis", "Šeštadienis"];
     var day = days[a.getDay()];
-    var time = day+ " " + year + '-' + month + '-'+date + ' ' + hour + ':' + min;
+    var time = day+ " " + year + '-' + month + '-'+date + ' ' + hour + ':' + min + ':' + sec;
+    //console.log(time);
+    document.getElementById("now").innerHTML = time;
     return time;
 }
+var t=setInterval(function(){now()},1000);
 
 function weekDay(UNIX_timestamp){
     var a = new Date(UNIX_timestamp * 1000);
@@ -258,7 +268,7 @@ function getData () {
     <img src = "${dayOb[0].ikona}">
     </div>
     <div class = "tempToday">
-        <h4 class = "now">${now()}</h4>
+        <h4 class = "now" id = "now"></h4>
         <h1>${parseInt(data.list[0].main.temp)}&deg;C</h1>
         <h4>${data.list[0].weather[0].description}</h4>
     </div>
