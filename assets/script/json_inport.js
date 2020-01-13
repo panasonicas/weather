@@ -1,3 +1,6 @@
+"use strict";
+
+
 function timeConverter(UNIX_timestamp){
     var a = new Date(UNIX_timestamp * 1000);
     var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -13,7 +16,7 @@ function timeConverter(UNIX_timestamp){
     return time;
 }
 
-function now (){
+    function dabartinisLaikas(){
     var a = new Date();
     var year = a.getFullYear();
     
@@ -31,23 +34,41 @@ function now (){
     var sec = ifLess10(a.getSeconds());
     var days = ["Sekmadienis", "Pirmadienis", "Antradienis", "Trečiadienis", "Ketvirtadienis", "Penktadienis", "Šeštadienis"];
     var day = days[a.getDay()];
-    var time = day+ " " + year + '-' + month + '-'+date + ' ' + hour + ':' + min + ':' + sec;
-    //console.log(time);
-    document.getElementById("now").innerHTML = time;
-    return time;
+    //---------FORMATUOJAME---------
+    var time = day+ "<br>" + year + '-' + month + '-'+date + '<br>' + hour + ':' + min + ':' + sec;
+    var formatDiena = day;
+    var formatData = year + '-' + month + '-'+date;
+    var formatLaikas = hour + ':' + min + ':' + sec;
+    //---------SPAUSDINAME---------
+    document.getElementById("now").innerHTML = `
+    <h4>${formatData},  ${formatDiena}</h4>
+    <h2>${formatLaikas}</h2>
+    `;
 }
-var t=setInterval(function(){now()},1000);
+
+var t=setInterval(function(){dabartinisLaikas()},1000);
+
 
 function weekDay(UNIX_timestamp){
     var a = new Date(UNIX_timestamp * 1000);
-    var days = ["Sekmadienis", "Pirmadienis", "Antradienis", "Trečiadienis", "Ketvirtadienis", "Penktadienis", "Šeštadienis"];
+   // var days = ["Sekmadienis", "Pirmadienis", "Antradienis", "Trečiadienis", "Ketvirtadienis", "Penktadienis", "Šeštadienis"];
+    var days = ["Sek", "Pr", "Ant", "Tre", "Kt", "Pn", "Št"];
     var day = days[a.getDay()];
     return day;
 }
-function Day(UNIX_timestamp){
+function monthDay(UNIX_timestamp){
+    
+function ifLess10(t){
+    if(t<10){
+        t="0"+t; 
+    }
+    return t;
+}
     var a = new Date(UNIX_timestamp * 1000);
-    var thisDay = a.getDate();
-    return thisDay;
+    var thisDay = ifLess10(a.getDate());
+    var smonths = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+    var month = smonths[a.getMonth()];
+    return (month+"-"+thisDay);
 }
 
 function hour(UNIX_timestamp){
@@ -56,33 +77,40 @@ function hour(UNIX_timestamp){
     return hour;
 }
 
-function Refresh(){document.getElementById("btn").addEventListener("click", function(){
-    //location.reload();
-    document.getElementById("daily-flex-container").innerHTML = "";
-    getData();
-    });
+function Refresh(){
+    for(let i=1; i<9; i++){
+        document.getElementById("selectedCity"+i+"").addEventListener("click", function(){
+            //location.reload();
+            document.getElementById("daily-flex-container").innerHTML = "";
+            getData(i);
+            });
+    }
 }
 
-function myfunction(){
-    var e = document.getElementById("selectorius");
-    var strUser = e.options[e.selectedIndex].value;
+function myfunction(i){
+    var e = document.getElementById("selectedCity"+i+"");
+    //var e = document.getElementsByClassName("cityBtn");
+    var strUser = e.value;
     var url1 = `https://api.openweathermap.org/data/2.5/forecast?id=${strUser}&units=metric&lang=lt&APPID=15d5d0897e0df118cf21bf2eef3f894f`
     return url1;
     };
 
-function selectedCity(){
-    var e = document.getElementById("selectorius");
-    var chosen = e.options[e.selectedIndex].text;
+function selectedCity(i){
+    var e = document.getElementById("selectedCity"+i+"");
+    var chosen = e.title;
     return chosen;
     };
 
-function getData () {
+function getData (i) {
+    console.log("get data viduje esantis globalus i: "+i);
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", myfunction(), true);
+    xhr.open("GET", myfunction(i), true);
     xhr.onload = function() {
         const data = JSON.parse(xhr.response);
+        console.log(data.list[0].main);
+        console.log(data.list[0].wind);
         for(let i=0; i<40; i++){
-            console.log(timeConverter(data.list[i].dt));
+            
         }
 
         //kada prasideda kita diena
@@ -94,8 +122,8 @@ function getData () {
         }
         //console.log("indeksas lygu "+indeks); //kita diena prasideda po tiek id kiek yra index reiksme
         
-        startID = 0; //pirmos dienos pradzios ID
-        endID = indeks; //pirmos dienos pabaigos ID
+        let startID = 0; //pirmos dienos pradzios ID
+        let endID = indeks; //pirmos dienos pabaigos ID
         
         //objektas kuris saugo dienos pradzios ir pabaigos ID
         var objects={};
@@ -110,7 +138,7 @@ function getData () {
         endID=startID+7;
         }
         for (let i =0; i<5; i++){
-            console.log(objects[i]); 
+           // console.log(objects[i]); 
         }
         //console.log(objects);
 
@@ -189,29 +217,8 @@ function getData () {
     ];
 
     //formuojame API ikonu masyva
-    let staticIcoDay = [
-    "01d",
-    "02d",
-    "03d",
-    "04d",
-    "09d",
-    "10d",
-    "11d",
-    "13d",
-    "50d"
-    ];
-
-    let staticIcoNight = [
-    "01n",
-    "02n",
-    "03n",
-    "04n",
-    "09n",
-    "10n",
-    "11n",
-    "13n",
-    "50n"
-    ];
+    let staticIcoDay = ["01d","02d","03d","04d","09d","10d","11d","13d","50d"];
+    let staticIcoNight = ["01n","02n","03n","04n","09n","10n","11n","13n","50n"];
     let change = "";
     function keitimas (a){
     for (let i = 0; i<staticIcoDay.length; i++){
@@ -223,7 +230,6 @@ function getData () {
         }
     }
     return change;
-    
 }
 
    
@@ -233,46 +239,48 @@ function getData () {
             minmax: minmax(objects[x].start, objects[x].end),
             day: weekDay(data.list[objects[x].start].dt),
             ikona: keitimas(most(ikona(objects[x].start, objects[x].end))),
-            date: Day(data.list[objects[x].start].dt)
+            date: monthDay(data.list[objects[x].start].dt)
         }    
     }
-    console.log(dayOb[0]);
+    //console.log(dayOb[0]);
     
-
-
-    
-
-    function innerprint(){
-        for(let i=0; i<5; i++){
-            let pradziosID = objects[i].start;  
-            let pabaigosID = objects[i].end; 
-            for(pradziosID; pradziosID<=pabaigosID; pradziosID++){   
-            document.getElementById("testSpec"+i+"").innerHTML += `
-            <div class = "column" >
-                <p>${hour(data.list[pradziosID].dt)}:00</p>
-                <img src = "${keitimas(data.list[pradziosID].weather[0].icon)}">
-                <p>${parseInt(data.list[pradziosID].main.temp)}&deg;C</p>
-            </div>
-            ` }
-
-        }
-
-    }
     
     document.getElementById("flex-container").innerHTML = `
-    <div class = "city">
-        <h2>${selectedCity()}<br>
-        Orai</h2>
-    </div>
-    <div class = "iconToday">
-    <img src = "${dayOb[0].ikona}">
-    </div>
-    <div class = "tempToday">
-        <h4 class = "now" id = "now"></h4>
-        <h1>${parseInt(data.list[0].main.temp)}&deg;C</h1>
-        <h4>${data.list[0].weather[0].description}</h4>
-    </div>
+    
+    <div class = "weatherToday">
+    <h4 class = "now" id="now"></h4>
+        <div class = "city">
+            <h2>${selectedCity(i)}, Lietuva</h2>
+        </div>
+        <div class="description">
+        <h3>${data.list[0].weather[0].description}</h3>
+        </div>
+        <div class = "iconToday">
+            <img src = "${dayOb[0].ikona}">
+        </div>
+        <div class = "tempToday">
+            <h1><i class="fas fa-temperature-low"></i> ${parseInt(data.list[0].main.temp)}&deg;C</h1>
+            <h4>Pojūtis ${data.list[0].main.feels_like}&deg;C</h4>
+            <h1>${parseInt(dayOb[0].minmax[0])}&deg; / ${parseInt(dayOb[0].minmax[1])}&deg;</h1>
+        </div>
+        <div class = "moreDetail">
+            <div class = "detailColumn">
+                <h4><i class="fab fa-safari"></i><br> Slėgis <br> ${data.list[0].main.pressure} Pa</h4>
+            </div>
+            <div class = "detailColumn">
+                <h4><i class="fas fa-tint"></i><br> Drėgmė <br> ${data.list[0].main.humidity}%</h4>
+            </div>
+            <div class = "detailColumn">
+                <h4><i class="fas fa-wind"></i><br> Vėjo greitis <br> ${data.list[0].wind.speed}m/s</h4>
+            </div>
+            <div class = "detailColumn">
+                <h4><i class="fas fa-location-arrow"></i><br> Kryptis <br> ${data.list[0].wind.deg}'</h4>
+            </div>
+        </div>
+    </div>    
+    <div class="my-slider" id="my-slider"></div>
     `
+
     for(let i=0; i<5; i++){
         document.getElementById("daily-flex-container").innerHTML += `
         <div class = "dayColumn" id="${i}">
@@ -296,19 +304,51 @@ function getData () {
             </div>
         </div>
         <div class="testSpec${i}" id="testSpec${i}"></div>
-        `
+        `  
     }
 
-    innerprint();
-    showUp();
+function sliderPrint(){
+    for(let i=0; i<5; i++){
+        let pradziosID = objects[i].start;  
+        let pabaigosID = objects[i].end; 
+        for(pradziosID; pradziosID<=pabaigosID; pradziosID++){   
+        document.getElementById("my-slider").innerHTML += `
+            <div class = "column">
+                <p>${weekDay(data.list[pradziosID].dt)} ${monthDay(data.list[pradziosID].dt)}<br>
+                ${hour(data.list[pradziosID].dt)}:00</p>
+                <img src = "${keitimas(data.list[pradziosID].weather[0].icon)}">
+                <h4>${parseInt(data.list[pradziosID].main.temp)}&deg;C</h4>
+            </div>
+        ` }
 
- 
+    }
+
+}
+
+    sliderPrint();
+    showUp();
+    //showNav();
+    //-------------------------TINY SLIDER ON GET DATA FUNCTION PROPERTIES-----------------------  
+    tns({
+        container: '.my-slider',
+        items: 5,
+        // slideBy: 'page',
+        autoplay: false,
+        loop: false,
+        mouseDrag:true,
+        slideShow: {
+            autoStart: true,
+            autoplayTimeout: 1000,
+          },
+      });
+    //-------------------------TINY SLIDER ON GET DATA FUNCTION PROPERTIES----------------------- 
     };
     xhr.send();
 };
 
 Refresh();
-getData();
+getData(1);
+
 
 function showUp (){
     for (let i=0 ; i<5; i++){
@@ -320,3 +360,27 @@ function showUp (){
 }
 }
 
+function showNav (){
+        let today = document.getElementById("btn");
+        let show = document.getElementById("selectorius");
+        today.addEventListener ('click', () => {
+            show.classList.toggle("nav-active");
+    });
+
+}
+
+
+// function innerprint(){
+//     for(let i=0; i<5; i++){
+//         let pradziosID = objects[i].start;  
+//         let pabaigosID = objects[i].end; 
+//         for(pradziosID; pradziosID<=pabaigosID; pradziosID++){   
+//         document.getElementById("my-slider").innerHTML += `
+//             <p>${hour(data.list[pradziosID].dt)}:00</p>
+//             <img src = "${keitimas(data.list[pradziosID].weather[0].icon)}">
+//             <p>${parseInt(data.list[pradziosID].main.temp)}&deg;C</p>
+//         ` }
+
+//     }
+
+// }

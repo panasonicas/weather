@@ -6,32 +6,33 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Vilnius orai 5 dienos</title>
 		<link href="https://fonts.googleapis.com/css?family=Ubuntu+Condensed&display=swap" rel="stylesheet">
+		<script src="https://kit.fontawesome.com/40aac8e6ce.js" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="assets/css/tiny-slider.css">
 		<link rel="stylesheet" href="assets/css/style.css">
 	</head>
 	<body>
-		<div class=container>
-			<div id ="selector">
-				<!-- onClick="document.location.reload(true)" -->
-				<button id="btn" type="button" >Select</button>
-				<select id ="selectorius">
-					<option value=593116>Vilnius</option>
-					<option value=598316>Kaunas</option>
-					<option value=598098 >Klaipėda</option>
-					<option value=599757>Druskininkai</option>
-					<option value=596128>Panevėžys</option>
-					<option value=594739>Šiauliai</option>
-					<option value=593153>Vilkaviškis</option>
-					<option value=597231>Marijampolė</option>
-				  </select>				  
+		<div class = "container">
+			<div class = "selector" id ="selector">
+				<h2 class ="heading">Pasirinkite miestą:</h2>
+				<!-- <button class="btn" id="btn" type="button" >PASIRINKTI MIESTĄ</button> -->
+				<div class="nav" id ="selectorius">
+					<button class="cityBtn" id="selectedCity1" value=593116 title="Vilnius">Vilnius</button>
+					<button class="cityBtn" id="selectedCity2" value=598316 title="Kaunas">Kaunas</button>
+					<button class="cityBtn" id="selectedCity3" value=598098 title="Klaipėda">Klaipėda</button>
+					<button class="cityBtn" id="selectedCity4" value=599757 title="Druskininkai">Druskininkai</button>
+					<button class="cityBtn" id="selectedCity5" value=596128 title="Panevėžys">Panevėžys</button>
+					<button class="cityBtn" id="selectedCity6" value=594739 title="Šiauliai">Šiauliai</button>
+					<button class="cityBtn" id="selectedCity7" value=593153 title="Vilkaviškis">Vilkaviškis</button>
+					<button class="cityBtn" id="selectedCity8" value=597231 title="Marijampolė">Marijampolė</button>
+				  </div>				  
 			</div>
-			<div id="flex-container">	
-			</div>
-			<div id="daily-flex-container">	
-			</div>
-			<!-- <div calass="testSpec">	
-			</div> -->
-		</div>
-		<div id="test"></div>
+			<div id="flex-container"></div>
+			<div class="daily-flex-container" id="daily-flex-container"></div>	
+			
+
+		<script src="assets/script/tiny-slider.js"></script>
+		<!-- <script src="assets/script/custom.js"></script> -->
 		<script src="assets/script/json_inport.js"></script>
+		
 	</body>
 </html>
