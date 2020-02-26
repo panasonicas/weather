@@ -107,12 +107,6 @@ function getData (i) {
     xhr.open("GET", myfunction(i), true);
     xhr.onload = function() {
         const data = JSON.parse(xhr.response);
-        console.log(data.list[0].main);
-        console.log(data.list[0].wind);
-        for(let i=0; i<40; i++){
-            
-        }
-
         //kada prasideda kita diena
 
         let n=hour(data.list[0].dt);
@@ -244,7 +238,8 @@ function getData (i) {
     }
     //console.log(dayOb[0]);
     
-    
+  
+    let windDirec =-45-180+(data.list[0].wind.deg);
     document.getElementById("flex-container").innerHTML = `
     
     <div class = "weatherToday">
@@ -259,13 +254,13 @@ function getData (i) {
             <img src = "${dayOb[0].ikona}">
         </div>
         <div class = "tempToday">
-            <h1><i class="fas fa-temperature-low"></i> ${parseInt(data.list[0].main.temp)}&deg;C</h1>
+            <h1><i class="fas fa-temperature-low"></i> ${Math.round(parseFloat(data.list[0].main.temp))}&deg;C</h1>
             <h4>Pojūtis ${data.list[0].main.feels_like}&deg;C</h4>
-            <h1>${parseInt(dayOb[0].minmax[0])}&deg; / ${parseInt(dayOb[0].minmax[1])}&deg;</h1>
+            <h1>${Math.round(parseFloat(dayOb[0].minmax[0]))}&deg; / ${Math.round(parseFloat(dayOb[0].minmax[1]))}&deg;</h1>
         </div>
         <div class = "moreDetail">
             <div class = "detailColumn">
-                <h4><i class="fab fa-safari"></i><br> Slėgis <br> ${data.list[0].main.pressure} Pa</h4>
+                <h4><i class="fab fa-safari"></i><br> Slėgis <br> ${data.list[0].main.pressure}<span> hPa</span></h4>
             </div>
             <div class = "detailColumn">
                 <h4><i class="fas fa-tint"></i><br> Drėgmė <br> ${data.list[0].main.humidity}%</h4>
@@ -274,7 +269,7 @@ function getData (i) {
                 <h4><i class="fas fa-wind"></i><br> Vėjo greitis <br> ${data.list[0].wind.speed}m/s</h4>
             </div>
             <div class = "detailColumn">
-                <h4><i class="fas fa-location-arrow"></i><br> Kryptis <br> ${data.list[0].wind.deg}'</h4>
+                <h4><i class="fas fa-location-arrow" style="transform: rotate(${windDirec}deg)"></i><br> Kryptis <br> ${data.list[0].wind.deg}'</h4>
             </div>
         </div>
     </div>    
@@ -293,12 +288,12 @@ function getData (i) {
             <div class= "dayNyght">
                 <div class= "day">
                     <p>DIENA</p>
-                    <h3 class="d">${parseInt(dayOb[i].minmax[1])}&deg;C</h3>
+                    <h3 class="d">${Math.round(parseFloat(dayOb[i].minmax[1]))}&deg;C</h3>
                     
                 </div>
                 <div class= "night">
                 <p>NAKTIS<p>
-                    <h3 class="n">${parseInt(dayOb[i].minmax[0])}&deg;C</h3>
+                    <h3 class="n">${Math.round(parseFloat(dayOb[i].minmax[0]))}&deg;C</h3>
                     
                 </div>
             </div>
@@ -317,7 +312,7 @@ function sliderPrint(){
                 <p>${weekDay(data.list[pradziosID].dt)} ${monthDay(data.list[pradziosID].dt)}<br>
                 ${hour(data.list[pradziosID].dt)}:00</p>
                 <img src = "${keitimas(data.list[pradziosID].weather[0].icon)}">
-                <h4>${parseInt(data.list[pradziosID].main.temp)}&deg;C</h4>
+                <h4>${Math.round(parseFloat(data.list[pradziosID].main.temp))}&deg;C</h4>
             </div>
         ` }
 
@@ -369,6 +364,46 @@ function showNav (){
 
 }
 
+function getMapData (a, j) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", a, true);
+    xhr.onload = function() {
+    const data = JSON.parse(xhr.response);
+        let CityTemp = Math.round(parseFloat(data.list[0].main.temp))+"&deg;C";
+        let windDirec =-45-180+(data.list[0].wind.deg);
+        let windSpeed = Math.round((data.list[0].wind.speed));
+        document.getElementById(j).innerHTML = `
+        ${CityTemp}<br>
+        <h4><i class="fas fa-location-arrow" style="transform: rotate(${windDirec}deg)"></i> ${windSpeed} <span>m/s</span></h4>
+        `
+};
+xhr.send();
+};
+
+//----------------MAP LINKŲ ID----------
+let cityID = {
+    Vilnius: 593116,
+    Kaunas: 598316,
+    Klaipėda: 598098,
+    Šiauliai: 594739,
+    Panevėžys: 596128,
+    Tauragė: 593959,
+    Alytus: 601084,
+    Utena: 593672
+}
+function maplink(id){
+    let link = `https://api.openweathermap.org/data/2.5/forecast?id=${id}&units=metric&lang=lt&APPID=15d5d0897e0df118cf21bf2eef3f894f`
+    return link;
+} 
+//maplink(cityID.Vilnius);
+getMapData(maplink(cityID.Vilnius), "pVilnius");
+getMapData(maplink(cityID.Kaunas), "pKaunas");
+getMapData(maplink(cityID.Klaipėda), "pKlaipėda");
+getMapData(maplink(cityID.Šiauliai), "pŠiauliai");
+getMapData(maplink(cityID.Panevėžys), "pPanevėžys");
+getMapData(maplink(cityID.Tauragė), "pTauragė");
+getMapData(maplink(cityID.Alytus), "pAlytus");
+getMapData(maplink(cityID.Utena), "pUtena");
 
 // function innerprint(){
 //     for(let i=0; i<5; i++){
